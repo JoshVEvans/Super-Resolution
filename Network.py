@@ -1,9 +1,9 @@
 import os
 import tensorflow as tf
 
-from keras.layers import Input, Conv2D, Add
 from keras.models import Model
 from tensorflow.keras.optimizers import Adam
+from keras.layers import Input, Conv2D, Add
 
 from tensorflow.keras.utils import plot_model
 
@@ -24,17 +24,17 @@ tf.compat.v1.keras.backend.set_session(session)
 
 def EDSR():
     # Parameters
-    filters = 64
+    filters = 128
 
     # Initialize Input
     inputX = Input(shape=(None, None, 3))
 
-    # Initial Residual Layer
+    # Initial Hidden Layer
     x = Conv2D(filters=filters, kernel_size=3, padding="same")(inputX)
     start = x
 
     # Residual Layers
-    for i in range(9):
+    for i in range(24):
         x = residual_block(x, filters=filters, kernel_size=3)
 
     # Add Residuals

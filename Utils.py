@@ -1,123 +1,98 @@
-from keras import Sequential
-from keras.layers import Conv2D, ReLU, LeakyReLU, BatchNormalization
-from keras.layers.experimental.preprocessing import Resizing
-from keras.optimizers import Adam
-from skimage.metrics import structural_similarity as ssim
 import tensorflow as tf
+
+from skimage.util import random_noise
+
+import io
+import imageio
+
 import numpy as np
 import random
-from tqdm import tqdm
 import cv2
-import os
 
 
-# Hides tensorflow outputs and warnings
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # or any {'0', '1', '2'}
-tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
+# This method returns the batch of images using multiprocessing for faster interpolation
+def load_multiprocessing(multiprocessing_pool, image_paths):
+    batch = multiprocessing_pool.map(get_set, image_paths)
 
-# Forces the use of the cpu or gpu
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+    X = []
+    y = []
 
-# Prevents memory overflow errors
-config = tf.compat.v1.ConfigProto(gpu_options=tf.compat.v1.GPUOptions(per_process_gpu_memory_fraction=0.95))
-config.gpu_options.allow_growth = True
-session = tf.compat.v1.Session(config=config)
-tf.compat.v1.keras.backend.set_session(session)
+    for iteration in batch:
+        X.append(iteration[0])
+        y.append(iteration[1])
 
-# Loss
-def mssim_loss(y_true, y_pred):
-    loss = 1 - tf.reduce_mean(tf.image.ssim(y_true, y_pred, 1))
-    return loss
+    X = np.array(X) / 255
+    y = np.array(y) / 255
 
-def modelSRCNN():
-    
-    # define model type
-    SRCNN = Sequential()
-
-    # add model layers
-    SRCNN.add(Conv2D(filters=128, kernel_size=(9,9), kernel_initializer='glorot_uniform',
-                     activation='relu', padding='same', use_bias=True, input_shape=(None,None,3)))
-    SRCNN.add(Conv2D(filters=64, kernel_size=(5,5), kernel_initializer='glorot_uniform',
-                     activation='relu', padding='same', use_bias=True))
-    SRCNN.add(Conv2D(filters=3, kernel_size=(5,5), kernel_initializer='glorot_uniform',
-                     activation='relu', padding='same', use_bias=True))
-
-    # define optimizer
-    adam = Adam(learning_rate = 0.001)
-
-    # compile model
-    SRCNN.compile(optimizer = adam, loss = mssim_loss, metrics = [mssim_loss, 'mean_squared_error', 'accuracy'])
-
-    return SRCNN
-
-def model_large_SRCNN():
-    
-    # define model type
-    SRCNN = Sequential()
-
-    # add model layers
-    SRCNN.add(Conv2D(filters=64, kernel_size=(9,9), kernel_initializer='glorot_uniform',
-                     activation='relu', padding='same', use_bias=True, input_shape=(None,None,3)))
-    SRCNN.add(Conv2D(filters=64, kernel_size=(7,7), kernel_initializer='glorot_uniform',
-                     activation='relu', padding='same', use_bias=True, input_shape=(None,None,3)))
-    SRCNN.add(Conv2D(filters=64, kernel_size=(5,5), kernel_initializer='glorot_uniform',
-                     activation='relu', padding='same', use_bias=True))
-    SRCNN.add(Conv2D(filters=3, kernel_size=(3,3), kernel_initializer='glorot_uniform',
-                     activation='relu', padding='same', use_bias=True))
-
-    # define optimizer
-    adam = Adam(learning_rate = 0.001)
-
-    # compile model
-    SRCNN.compile(optimizer = adam, loss = mssim_loss, metrics = [mssim_loss, 'mean_squared_error', 'accuracy'])
-
-    return SRCNN
+    return X, y
 
 
-def modelVDSR():
+# This method returns the batch of images of length batch_size
+def load(image_paths):
+    X = []
+    y = []
 
-    # define model type
-    VDSR = Sequential()
+    for image_path in image_paths:
+        a, b = get_set(image_path)
 
-    # add model layers
-    VDSR.add(Conv2D(filters=64, kernel_size=(3,3), kernel_initializer='glorot_uniform', padding='same', activation='relu', use_bias=True, input_shape=(None,None,3)))
-    VDSR.add(BatchNormalization())
-    for _ in range(18):
-        VDSR.add(Conv2D(filters=64, kernel_size=(3,3), kernel_initializer='glorot_uniform', padding='same', activation='relu', use_bias=True))
-        VDSR.add(BatchNormalization())
-    VDSR.add(Conv2D(filters=3, kernel_size=(3,3), kernel_initializer='glorot_uniform', padding='same', activation='relu', use_bias=True))
+        X.append(a)
+        y.append(b)
 
-    # define optimizer
-    adam = Adam(learning_rate = 6.25E-05)
-    # startrate: learning_rate = 0.001
+    X = np.array(X) / 255
+    y = np.array(y) / 255
 
-    # compile model
-    VDSR.compile(optimizer = adam, loss = mssim_loss, metrics = [mssim_loss, 'mean_squared_error', 'accuracy'])
+    return X, y
 
-    return VDSR
 
-def modelVDSR_smaller():
+# This method returns a set of X, y images.
+def get_set(image_path):
+    dim = 64
+    # Read Image from Path
+    image = cv2.imread(image_path)
 
-    # define model type
-    VDSR = Sequential()
+    # Crop / Resize Sample
+    temp_dim = image.shape
 
-    # add model layers
-    VDSR.add(Conv2D(filters=128, kernel_size=(9,9), kernel_initializer='glorot_uniform', padding='same', activation='relu', use_bias=True, input_shape=(None,None,3)))
-    VDSR.add(BatchNormalization())
-    for _ in range(9):
-        VDSR.add(Conv2D(filters=64, kernel_size=(5,5), kernel_initializer='glorot_uniform', padding='same', activation='relu', use_bias=True))
-        VDSR.add(BatchNormalization())
-    VDSR.add(Conv2D(filters=3, kernel_size=(3,3), kernel_initializer='glorot_uniform', padding='same', activation='relu', use_bias=True))
+    if temp_dim[0] >= dim and temp_dim[1] >= dim:
+        # Crop Image
+        image = np.array(tf.image.random_crop(image, size=(dim, dim, 3)))
+    else:
+        # Resize Image
+        image = cv2.resize(image, (dim, dim))
 
-    # define optimizer
-    adam = Adam(learning_rate = 0.001)
-    # startrate: learning_rate = 0.001
+    ### Data Augmentation ###
+    # Horizontal Flipping
+    if random.choice([True, False]):
+        image = cv2.flip(image, 1)
+    # Vertical Flipping
+    if random.choice([True, False]):
+        image = cv2.flip(image, 0)
+    # Rotation
+    if random.choice([True, False]):
+        temp = random.choice([0, 1, 2])
+        image = cv2.rotate(image, temp)
 
-    # compile model
-    VDSR.compile(optimizer = adam, loss = mssim_loss, metrics = [mssim_loss, 'mean_squared_error', 'accuracy'])
+    # Store y
+    y = image
 
-    return VDSR
+    ### Image Interpolation ###
+    # Random scaling with different scaling methods
+    scale = random.choice([2, 3, 4])
+    """
+    0: Nearest-neighbor
+    1: Bilinear
+    2: Bicubic
+    3: Area
+    4: Lanczos
+    """
+    image = cv2.resize(
+        image,
+        (dim // scale, dim // scale),
+        interpolation=random.choice([0, 1, 2, 3, 4]),
+    )
+    image = cv2.resize(image, (dim, dim), interpolation=random.choice([0, 1, 2, 3, 4]))
 
-if __name__ == '__main__':
-    model = modelVDSR()
-    print(model.summary())
+    # Store X
+    X = image
+
+    return X, y
