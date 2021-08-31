@@ -26,9 +26,9 @@ def evaluate(model, scale=2, concat=True, summary=True):
         image = cv2.resize(image, (dim[1] // scale, dim[0] // scale))
         image = cv2.resize(image, (dim[1], dim[0]))
         interpolated = image * 255
+        image = np.reshape(image, (1, *dim))
 
         # Get Output
-        image = np.reshape(image, (1, *dim))
         output = np.array(model(image)[0])
         output = output * 255
 
@@ -42,13 +42,13 @@ def evaluate(model, scale=2, concat=True, summary=True):
             )
 
 
-def predict(model, summary=True):
+def inference(model, summary=True):
 
     if summary:
         model.summary()
 
-    dir_original = "prediction/original/"
-    dir_output = "prediction/upscaled/"
+    dir_original = "inference/original/"
+    dir_output = "inference/upscaled/"
 
     image_names = os.listdir(dir_original)
 

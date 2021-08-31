@@ -3,7 +3,7 @@ import tensorflow as tf
 
 from keras.models import Model
 from tensorflow.keras.optimizers import Adam
-from keras.layers import Input, Conv2D, Add
+from keras.layers import Input, Conv2D, Add, BatchNormalization
 
 from tensorflow.keras.utils import plot_model
 
@@ -22,6 +22,11 @@ session = tf.compat.v1.Session(config=config)
 tf.compat.v1.keras.backend.set_session(session)
 
 
+def ssim_loss(y_true, y_pred):
+    loss = 1 - tf.reduce_mean(tf.image.ssim(y_true, y_pred, 1))
+    return loss
+
+
 def EDSR():
     # Parameters
     filters = 128
@@ -34,6 +39,7 @@ def EDSR():
     start = x
 
     # Residual Layers
+    # Large Model: 24 residuals 128 filters
     for i in range(24):
         x = residual_block(x, filters=filters, kernel_size=3)
 

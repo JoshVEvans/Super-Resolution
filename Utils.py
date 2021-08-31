@@ -1,9 +1,5 @@
 import tensorflow as tf
 
-from skimage.util import random_noise
-
-import io
-import imageio
 
 import numpy as np
 import random
@@ -23,6 +19,9 @@ def load_multiprocessing(multiprocessing_pool, image_paths):
 
     X = np.array(X) / 255
     y = np.array(y) / 255
+
+    # X = X - np.mean(X)
+    # y = y - np.mean(y)
 
     return X, y
 
@@ -46,7 +45,7 @@ def load(image_paths):
 
 # This method returns a set of X, y images.
 def get_set(image_path):
-    dim = 64
+    dim = 128
     # Read Image from Path
     image = cv2.imread(image_path)
 

@@ -16,11 +16,11 @@ import os
 def main():
 
     # Parameters
-    dataset_path = "data/"
-    batch_size = 2
+    dataset_path = "data/COCO/"
+    batch_size = 8
     epochs = 1000
-    steps_per_epoch = 100
-    workers = 1
+    steps_per_epoch = 1000
+    workers = 2
 
     ### Training Loop ###
     training(
