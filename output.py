@@ -76,4 +76,4 @@ def inference(model, summary=True):
 if __name__ == "__main__":
 
     model = load_model("weights/BEST_WEIGHTS.h5")
-    evaluate(model)
+    inference(model)
