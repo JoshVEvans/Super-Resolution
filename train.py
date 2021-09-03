@@ -16,7 +16,7 @@ import os
 def main():
 
     # Parameters
-    dataset_path = "data/COCO/"
+    dataset_path = "data/"
     batch_size = 8
     epochs = 1000
     steps_per_epoch = 1000
