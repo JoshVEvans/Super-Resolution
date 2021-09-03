@@ -20,7 +20,7 @@ def main():
     batch_size = 8
     epochs = 1000
     steps_per_epoch = 1000
-    workers = 2
+    workers = 1
 
     ### Training Loop ###
     training(

@@ -20,8 +20,8 @@ def load_multiprocessing(multiprocessing_pool, image_paths):
     X = np.array(X) / 255
     y = np.array(y) / 255
 
-    # X = X - np.mean(X)
-    # y = y - np.mean(y)
+    X = X - np.mean(X)
+    y = y - np.mean(y)
 
     return X, y
 
@@ -45,7 +45,7 @@ def load(image_paths):
 
 # This method returns a set of X, y images.
 def get_set(image_path):
-    dim = 128
+    dim = 64
     # Read Image from Path
     image = cv2.imread(image_path)
 
@@ -76,7 +76,7 @@ def get_set(image_path):
 
     ### Image Interpolation ###
     # Random scaling with different scaling methods
-    scale = random.choice([2, 3, 4])
+    scale = random.choice([1, 2, 3, 4])
     """
     0: Nearest-neighbor
     1: Bilinear
@@ -87,7 +87,7 @@ def get_set(image_path):
     image = cv2.resize(
         image,
         (dim // scale, dim // scale),
-        interpolation=random.choice([0, 1, 2, 3, 4]),
+        interpolation=cv2.INTER_AREA,
     )
     image = cv2.resize(image, (dim, dim), interpolation=random.choice([0, 1, 2, 3, 4]))
 
