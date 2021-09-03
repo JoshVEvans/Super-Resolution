@@ -9,7 +9,7 @@ To see a higher quality version, **[click](https://github.com/JoshVEvans/Super-R
 ![alt text](evaluation/Combined/000000001300.jpg)
 
 ## Network Architecture:
-### The core of this model is in the residual blocks.
+#### The core of this model is in the residual blocks.
 
             x
 		|\
@@ -22,8 +22,8 @@ To see a higher quality version, **[click](https://github.com/JoshVEvans/Super-R
 		|/
 		+ (residual scaling)
 		|
-		result
-####
+		result'
+
 ![alt text](data/model_small.png)
 
 An image of the complete model is towards the bottom of this page.
