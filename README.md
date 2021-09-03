@@ -4,7 +4,7 @@ SISR is the process of upscaling a low resolution image to high resolution.
 
 ## Examples
 ![alt text](evaluation/Combined/000000000029.jpg)
-The images from left to right are original, interpolated through Nearest Neighbor upscaling, and prediction of the neural network. To see a higher version, **[click](https://github.com/JoshVEvans/Super-Resolution/tree/master/evaluation/Combined) on the images**. In some cases the upscaled image looks even better than the original!
+The images from left to right are original, interpolated(Nearest Neighbor upscaling), and prediction of the neural network. To see a higher version, **[click](https://github.com/JoshVEvans/Super-Resolution/tree/master/evaluation/Combined) on the images**. In some cases the upscaled image looks even better than the original!
 ![alt text](evaluation/Combined/000000001300.jpg)
 
 ## Network Architecture:
