@@ -9,7 +9,7 @@ To see a higher quality version, **[click](https://github.com/JoshVEvans/Super-R
 ![alt text](evaluation/Combined/000000001300.jpg)
 
 ## Network Architecture:
-The model consists of 24 residual blocks. Each block contains a Convolution, Relu, Convolution, Add layers.
+### The core of this model is in the residual blocks.
 
             x
 		|\
@@ -23,6 +23,7 @@ The model consists of 24 residual blocks. Each block contains a Convolution, Rel
 		+ (residual scaling)
 		|
 		result
+####
 ![alt text](data/model_small.png)
 
 An image of the complete model is towards the bottom of this page.
