@@ -36,7 +36,7 @@ The model is instantiated within [`network.py`](https://github.com/JoshVEvans/Su
 ![alt text](data/model_small.png)
 
 ## Complete Model Architecture.
-##### Set 5 Evaluation Set
+#### Set 5 Evaluation Set:
 Images Left to Right: Original, Bicubic, Predicted.
 ![alt text](evaluation/Combined/baboon.png)
 ![alt text](evaluation/Combined/baby.png)
