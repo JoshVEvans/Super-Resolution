@@ -1,6 +1,6 @@
 # Single-Image Super Resolution (SISR)
 ## What is Super Resolution?
-SISR is the process of upscaling a low resolution image to high resolution.
+Super Resolution is the process of upscaling a low resolution image into a high resolution. There's many methods that are commonly used for SR such as nearest neighbor interpolation, bicubic interpolation, and lanczos upsampling. [(here)](https://en.wikipedia.org/wiki/Comparison_gallery_of_image_scaling_algorithms)
 
 ## Examples
 ![alt text](evaluation/Combined/000000000029.jpg)
