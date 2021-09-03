@@ -16,7 +16,7 @@ def evaluate(model, scale=2, concat=True, summary=True):
 
     image_names = os.listdir(dir_original)
 
-    for image_name in image_names:
+    for image_name in enumerate(image_names):
         # Read in and format original image
         image = cv2.imread(f"{dir_original}{image_name}") / 255
         input = image * 255

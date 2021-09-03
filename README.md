@@ -4,7 +4,7 @@ SISR is the process of upscaling a low resolution image to high resolution.
 
 ## Examples
 ![alt text](evaluation/Combined/000000000029.jpg)
-The images from left to right are original, interpolated through bicubic upscaling, and prediction of the neural network. To see a higher version, **[click](https://github.com/JoshVEvans/Super-Resolution/tree/master/evaluation/Combined) on the images**.
+The images from left to right are original, interpolated through Nearest Neighbor upscaling, and prediction of the neural network. To see a higher version, **[click](https://github.com/JoshVEvans/Super-Resolution/tree/master/evaluation/Combined) on the images**.
 ![alt text](evaluation/Combined/000000001300.jpg)
 
 ## Network Architecture:
@@ -37,7 +37,7 @@ The model is instantiated within [`network.py`](https://github.com/JoshVEvans/Su
 
 ## Complete Model Architecture.
 #### Set 5 Evaluation Set:
-Images Left to Right: Original, Bicubic, Predicted.
+Images Left to Right: Original, Nearest Neighbor, Predicted.
 ![alt text](evaluation/Combined/baboon.png)
 ![alt text](evaluation/Combined/baby.png)
 ![alt text](evaluation/Combined/butterfly.png)
