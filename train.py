@@ -16,7 +16,7 @@ import os
 def main():
 
     # Parameters
-    dataset_path = "data/"
+    dataset_path = "data/COCO/"
     batch_size = 8
     epochs = 1000
     steps_per_epoch = 1000
@@ -40,7 +40,7 @@ def training(dataset_path, batch_size, epochs, steps_per_epoch, workers):
     temp = 0
 
     # Get Model
-    model = network.EDSR()
+    model = network.MODEL()
     model.summary()
     plot_model(model, to_file="model.png")
 

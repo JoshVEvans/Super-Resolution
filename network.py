@@ -27,7 +27,7 @@ def ssim_loss(y_true, y_pred):
     return loss
 
 
-def EDSR():
+def MODEL():
     # Parameters
     filters = 128
 
@@ -50,7 +50,7 @@ def EDSR():
     x = Conv2D(filters=3, kernel_size=3, padding="same")(x)
 
     # Create and Compile model
-    model = Model(inputs=inputX, outputs=x, name="EDSR")
+    model = Model(inputs=inputX, outputs=x, name="SISR")
     model.compile(optimizer=Adam(learning_rate=1e-4), loss="mae", metrics=["accuracy"])
 
     return model
@@ -86,6 +86,6 @@ if __name__ == "__main__":
     print("-" * 98)
     print("=" * 98)
 
-    model = EDSR()
+    model = MODEL()
     print(model.summary())
     plot_model(model, show_shapes=True, to_file="model.png")
