@@ -40,7 +40,7 @@ def EDSR():
 
     # Residual Layers
     # Large Model: 24 residuals 128 filters
-    for i in range(24):
+    for i in range(2):
         x = residual_block(x, filters=filters, kernel_size=3)
 
     # Add Residuals
