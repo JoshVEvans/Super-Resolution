@@ -22,7 +22,7 @@ To see a higher quality version, **[click](https://github.com/JoshVEvans/Super-R
 		|/
 		+ (residual scaling)
 		|
-		result'
+		result
 
 ![alt text](data/model_small.png)
 
