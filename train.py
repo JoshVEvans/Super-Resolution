@@ -20,7 +20,7 @@ def main():
     batch_size = 8
     epochs = 1000
     steps_per_epoch = 1000
-    workers = 1
+    workers = 4
 
     ### Training Loop ###
     training(
@@ -35,7 +35,7 @@ def main():
 def training(dataset_path, batch_size, epochs, steps_per_epoch, workers):
     # Metrics
     saved_loss = float("inf")
-    lr_decay_num = 10
+    lr_decay_num = 20
     best_epoch = 0
     temp = 0
 

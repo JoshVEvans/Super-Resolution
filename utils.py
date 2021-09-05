@@ -40,6 +40,9 @@ def load(image_paths):
     X = np.array(X) / 255
     y = np.array(y) / 255
 
+    X = X - np.mean(X)
+    y = y - np.mean(y)
+
     return X, y
 
 
@@ -76,7 +79,7 @@ def get_set(image_path):
 
     ### Image Interpolation ###
     # Random scaling with different scaling methods
-    scale = random.choice([1, 2, 3, 4])
+    scale = random.choice([2, 3, 4])
     """
     0: Nearest-neighbor
     1: Bilinear

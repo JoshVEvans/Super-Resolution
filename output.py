@@ -23,8 +23,10 @@ def evaluate(model, scale=2, concat=True, summary=True):
 
         # Interpolate image
         dim = image.shape
-        image = cv2.resize(image, (dim[1] // scale, dim[0] // scale))
-        image = cv2.resize(image, (dim[1], dim[0]))
+        image = cv2.resize(
+            image, (dim[1] // scale, dim[0] // scale), interpolation=cv2.INTER_AREA
+        )
+        image = cv2.resize(image, (dim[1], dim[0]), interpolation=cv2.INTER_NEAREST)
         interpolated = image * 255
         image = np.reshape(image, (1, *dim))
 
@@ -42,7 +44,7 @@ def evaluate(model, scale=2, concat=True, summary=True):
             )
 
 
-def inference(model, summary=True):
+def inference(model, scale=2, summary=True):
 
     if summary:
         model.summary()
@@ -57,7 +59,6 @@ def inference(model, summary=True):
         image = cv2.imread(f"{dir_original}{image_name}") / 255
 
         # Upscale image
-        scale = 2
         dim = image.shape
         image = cv2.resize(
             image, (dim[1] * scale, dim[0] * scale), interpolation=cv2.INTER_LANCZOS4
@@ -74,6 +75,5 @@ def inference(model, summary=True):
 
 
 if __name__ == "__main__":
-
     model = load_model("weights/BEST_WEIGHTS.h5")
-    inference(model)
+    inference(model, scale=2)

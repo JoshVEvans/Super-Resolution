@@ -50,7 +50,7 @@ def MODEL():
     x = Conv2D(filters=3, kernel_size=3, padding="same")(x)
 
     # Create and Compile model
-    model = Model(inputs=inputX, outputs=x, name="SISR")
+    model = Model(inputs=inputX, outputs=x, name="SR")
     model.compile(optimizer=Adam(learning_rate=1e-4), loss="mae", metrics=["accuracy"])
 
     return model
