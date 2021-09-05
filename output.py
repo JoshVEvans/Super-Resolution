@@ -68,8 +68,7 @@ def inference(model, scale=2, summary=True):
 
         # Get Output
         output = np.array(model(image)[0]) * 255
-        print(output.shape)
-
+    
         # Write Output
         cv2.imwrite(f"{dir_output}{image_name}", output)
 
