@@ -22,6 +22,7 @@ session = tf.compat.v1.Session(config=config)
 tf.compat.v1.keras.backend.set_session(session)
 
 
+# Used for a test on possible loss functions -- ssim loss doesn't function as good as L1 loss
 def ssim_loss(y_true, y_pred):
     loss = 1 - tf.reduce_mean(tf.image.ssim(y_true, y_pred, 1))
     return loss
