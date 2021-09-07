@@ -3,7 +3,7 @@ import tensorflow as tf
 
 from keras.models import Model
 from tensorflow.keras.optimizers import Adam
-from keras.layers import Input, Conv2D, Add, BatchNormalization
+from keras.layers import Input, Conv2D, Add
 
 from tensorflow.keras.utils import plot_model
 
