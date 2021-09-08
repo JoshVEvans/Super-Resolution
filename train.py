@@ -14,7 +14,6 @@ import os
 
 
 def main():
-
     # Parameters
     dataset_path = "data/COCO/"
     batch_size = 8

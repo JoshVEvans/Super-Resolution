@@ -7,7 +7,6 @@ import cv2
 
 
 def evaluate(model, scale=2, concat=True, summary=True):
-
     if summary:
         model.summary()
 
@@ -45,7 +44,6 @@ def evaluate(model, scale=2, concat=True, summary=True):
 
 
 def inference(model, scale=2, summary=True):
-
     if summary:
         model.summary()
 
@@ -68,7 +66,7 @@ def inference(model, scale=2, summary=True):
 
         # Get Output
         output = np.array(model(image)[0]) * 255
-    
+
         # Write Output
         cv2.imwrite(f"{dir_output}{image_name}", output)
 
