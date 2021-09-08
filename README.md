@@ -42,7 +42,7 @@ Images Left to Right: Original, Nearest Neighbor, Predicted.
 ![alt text](evaluation/Combined/butterfly.png)
 ![alt text](evaluation/Combined/comic.png)
 
-## Complete Model Architecture.
+## Complete Model Architecture:
 
 ![alt text](data/model_large.png)
 
