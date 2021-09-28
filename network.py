@@ -188,4 +188,4 @@ if __name__ == "__main__":
 
     model = MODEL_LARGE()
     print(model.summary())
-    plot_model(model, show_shapes=False, to_file="model.png")
+    plot_model(model, show_shapes=True, to_file="model.png")
