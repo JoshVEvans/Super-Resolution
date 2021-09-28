@@ -31,7 +31,7 @@ My implementation uses the idea of skip connections found within VDSR and implem
 		|
 		result
 
-Uses `Add` layers to add residuals
+#### Uses `Add` layers to add residuals
 ![alt text](md_images/model_large_residuals.png)
 
 #### This is the smaller model that uses `Concatenate` layers to add residuals
