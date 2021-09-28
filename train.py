@@ -17,7 +17,7 @@ def main():
     # Parameters
     dataset_path = "data/COCO/"
     batch_size = 8
-    epochs = 1000
+    epochs = 250
     steps_per_epoch = 1000
     workers = 4
 
@@ -39,7 +39,7 @@ def training(dataset_path, batch_size, epochs, steps_per_epoch, workers):
     temp = 0
 
     # Get Model
-    model = network.MODEL()
+    model = network.MODEL_LARGE()
     model.summary()
     plot_model(model, to_file="model.png")
 
@@ -101,6 +101,8 @@ def training(dataset_path, batch_size, epochs, steps_per_epoch, workers):
 
             # Update Learning Rate
             if temp >= lr_decay_num:
+                best_epoch = e
+                saved_loss = avg_loss
                 K.set_value(
                     model.optimizer.learning_rate, model.optimizer.learning_rate / 2
                 )

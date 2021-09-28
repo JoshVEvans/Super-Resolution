@@ -1,12 +1,19 @@
 # Single-Image Super Resolution (SISR)
 ## What is Super Resolution?
-Super Resolution is the process of upscaling a low-resolution image into a high resolution. Many methods are commonly used for SR, such as nearest-neighbor interpolation, bicubic interpolation, and Lanczos upsampling [(here)](https://en.wikipedia.org/wiki/Comparison_gallery_of_image_scaling_algorithms). Deep learning methods improve previous techniques by applying common patterns found within high-resolution training data in the low-resolution image during inference.
+Super Resolution is the process of upscaling an image from low to high resolution. Many methods are commonly used for SR, such as nearest-neighbor interpolation, bicubic interpolation, and Lanczos upsampling [(here)](https://en.wikipedia.org/wiki/Comparison_gallery_of_image_scaling_algorithms). Deep learning methods improve previous techniques by applying common patterns found within high-resolution training data onto the low-resolution image during inference.
 
 ## Examples
 ![alt text](evaluation/Combined/000000000029.jpg)
 ##### *From left to right: original, interpolated(Nearest Neighbor upscaling), and prediction(from neural network)*<br />
 To see a higher quality version, **[click](https://github.com/JoshVEvans/Super-Resolution/tree/master/evaluation/Combined) on the images**. In some cases, the upscaled image looks even better than the original!
 ![alt text](evaluation/Combined/000000001300.jpg)
+
+## Reasearch and Development
+How did I get to this model architecture? I initially started with a very early architecture known as Single-Image Convolutional Neural Network ([SRCNN](https://arxiv.org/pdf/1501.00092.pdf)). This architecture consists of 2 hidden layers and a reconstruction layer as an output.
+![alt text](md_images/srcnn.png)
+The next model I tried implementing was Very Deep Super-Resolution ([VDSR](https://arxiv.org/pdf/1511.04587.pdf))). This model improves upon the original SRCNN by adding a global skip connection thus making the process of upscaling much easier. Essentially, the network doesn't need to completely reconstruct the image and instead simply needs to reconstruct the difference (the residual) between the high and low resolution image.
+<br />
+My implementation uses the idea of skip connections found within VDSR and implements both global and local connections using an Add Layer. Since this model is quite deep, I also created an implementation of a smaller model that instead of uses `Add` Layers uses `Concatenate` layers.
 
 ## Network Architecture:
 #### The core of this model is in the residual blocks.
@@ -24,7 +31,11 @@ To see a higher quality version, **[click](https://github.com/JoshVEvans/Super-R
 		|
 		result
 
-![alt text](data/model_small.png)
+Uses `Add` layers to add residuals
+![alt text](md_images/model_large_residuals.png)
+
+#### This is the smaller model that uses `Concatenate` layers to add residuals
+![alt text](md_images/model_small.png)
 
 An image of the complete model is towards the bottom of this page.
 
@@ -44,7 +55,7 @@ Images Left to Right: Original, Nearest Neighbor, Predicted.
 
 ## Complete Model Architecture:
 
-![alt text](data/model_large.png)
+![alt text](md_images/model_large.png)
 
 ### Hardware - Training Statistics
 ##### Trained on 3070 ti
