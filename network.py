@@ -141,7 +141,7 @@ def MODEL_SMALL():
     start = x
 
     # Residual Layers
-    for i in range(2):
+    for i in range(9):
         x = residual_block_small(x, filters=filters, kernel_size=3)
 
     # Add Residuals
@@ -186,6 +186,6 @@ if __name__ == "__main__":
     print("-" * 98)
     print("=" * 98)
 
-    model = MODEL_SMALL()
+    model = MODEL_LARGE()
     print(model.summary())
-    plot_model(model, show_shapes=False, to_file="model.png")
+    plot_model(model, show_shapes=True, to_file="model.png")
