@@ -11,9 +11,9 @@ To see a higher quality version, **[click](https://github.com/JoshVEvans/Super-R
 ## Reasearch and Development
 How did I get to this model architecture? I initially started with a very early architecture known as Single-Image Convolutional Neural Network ([SRCNN](https://arxiv.org/pdf/1501.00092.pdf)). This architecture consists of 2 hidden layers and a reconstruction layer as an output.
 ![alt text](md_images/srcnn.png)
-The next model I tried implementing was Very Deep Super-Resolution ([VDSR](https://arxiv.org/pdf/1511.04587.pdf)). This model improves upon the original SRCNN by adding a global skip connection thus making the process of upscaling much easier. Essentially, the network doesn't need to completely reconstruct the image and instead simply needs to reconstruct the difference (the residual) between the high and low resolution image.
+The next model I tried implementing was Very Deep Super-Resolution ([VDSR](https://arxiv.org/pdf/1511.04587.pdf)). This model improves upon the original SRCNN by adding a global skip connection, thus making upscaling much easier. Essentially, the network doesn't need to reconstruct the image entirely and instead needs to reconstruct the difference (the residual) between the high and low-resolution image.
 <br />
-My implementation uses the idea of skip connections found within VDSR and implements both global and local connections using an Add Layer. Since this model is quite deep, I also created an implementation of a smaller model that instead of uses `Add` Layers uses `Concatenate` layers.
+My implementation uses the idea of skip connections found within VDSR and implements both global and local connections using an `Add` Layer. Since this model is quite deep, I also implemented a smaller model that uses `Concatenate` layers instead of using `Add` Layers.
 
 ## Network Architecture:
 #### The core of this model is in the residual blocks.
