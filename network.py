@@ -3,7 +3,7 @@ import tensorflow as tf
 
 from keras.models import Model
 from tensorflow.keras.optimizers import Adam
-from keras.layers import Input, Conv2D, Add
+from keras.layers import Input, Conv2D, Concatenate, Add
 
 from tensorflow.keras.utils import plot_model
 
@@ -22,13 +22,60 @@ session = tf.compat.v1.Session(config=config)
 tf.compat.v1.keras.backend.set_session(session)
 
 
-# Used for a test on possible loss functions -- ssim loss doesn't function as good as L1 loss
+# Used for a test on possible loss functions -- ssim loss doesn't function as well as L1 loss
 def ssim_loss(y_true, y_pred):
     loss = 1 - tf.reduce_mean(tf.image.ssim(y_true, y_pred, 1))
     return loss
 
 
-def MODEL():
+def SRCNN():
+    # Initialize Input
+    inputX = Input(shape=(None, None, 3))
+
+    # Hidden Layers
+    x = Conv2D(filters=64, kernel_size=9, padding="same", activation="relu")(inputX)
+    x = Conv2D(filters=32, kernel_size=1, padding="same", activation="relu")(x)
+
+    # Reconstruction - Output Layer
+    x = Conv2D(filters=3, kernel_size=5, padding="same", activation="relu")(x)
+
+    # Create and Compile model
+    model = Model(inputs=inputX, outputs=x, name="SRCNN")
+    model.compile(optimizer=Adam(learning_rate=1e-4), loss="mae", metrics=["accuracy"])
+
+    return model
+
+
+def VDSR():
+    # Parameters
+    filters = 64
+
+    # Initialize Input
+    inputX = Input(shape=(None, None, 3))
+
+    x = Conv2D(filters=filters, kernel_size=3, padding="same", activation="relu")(
+        inputX
+    )
+    start = x
+
+    # Residual Layers
+    for _ in range(18):
+        x = Conv2D(filters=filters, kernel_size=3, padding="same", activation="relu")(x)
+
+    # Add Residuals
+    x = Add()([start, x])
+
+    # Reconstruction - Output Layer
+    x = Conv2D(filters=3, kernel_size=3, padding="same", activation="relu")(x)
+
+    # Create and Compile model
+    model = Model(inputs=inputX, outputs=x, name="VDSR")
+    model.compile(optimizer=Adam(learning_rate=1e-4), loss="mae", metrics=["accuracy"])
+
+    return model
+
+
+def MODEL_LARGE():
     # Parameters
     filters = 128
 
@@ -42,7 +89,7 @@ def MODEL():
     # Residual Layers
     # Large Model: 24 residuals 128 filters
     for i in range(24):
-        x = residual_block(x, filters=filters, kernel_size=3)
+        x = residual_block_large(x, filters=filters, kernel_size=3)
 
     # Add Residuals
     x = Add()([start, x])
@@ -51,13 +98,13 @@ def MODEL():
     x = Conv2D(filters=3, kernel_size=3, padding="same")(x)
 
     # Create and Compile model
-    model = Model(inputs=inputX, outputs=x, name="SR")
+    model = Model(inputs=inputX, outputs=x, name="SR_LARGE")
     model.compile(optimizer=Adam(learning_rate=1e-4), loss="mae", metrics=["accuracy"])
 
     return model
 
 
-def residual_block(inputX, filters, kernel_size):
+def residual_block_large(inputX, filters, kernel_size):
     """
     x
 		|\
@@ -82,11 +129,63 @@ def residual_block(inputX, filters, kernel_size):
     return x
 
 
+def MODEL_SMALL():
+    # Parameters
+    filters = 64
+
+    # Initialize Input
+    inputX = Input(shape=(None, None, 3))
+
+    # Initial Hidden Layer
+    x = Conv2D(filters=filters, kernel_size=3, padding="same")(inputX)
+    start = x
+
+    # Residual Layers
+    for i in range(9):
+        x = residual_block_small(x, filters=filters, kernel_size=3)
+
+    # Add Residuals
+    x = Concatenate()([start, x])
+
+    # Reconstruction - Output Layer
+    x = Conv2D(filters=3, kernel_size=3, padding="same")(x)
+
+    # Create and Compile model
+    model = Model(inputs=inputX, outputs=x, name="SR_SMALL")
+    model.compile(optimizer=Adam(learning_rate=1e-4), loss="mae", metrics=["accuracy"])
+
+    return model
+
+
+def residual_block_small(inputX, filters, kernel_size):
+    """
+    x
+		|\
+		| \
+		|  conv2d
+		|  activation
+		|  conv2d
+        |  (multiply scaling)
+		| /
+		|/
+		+ (addition here)
+		|
+		result
+    """
+    x = Conv2D(
+        filters=filters, kernel_size=kernel_size, activation="relu", padding="same"
+    )(inputX)
+    x = Conv2D(filters=filters, kernel_size=kernel_size, padding="same")(x)
+    x = Concatenate()([inputX, x])
+
+    return x
+
+
 if __name__ == "__main__":
     print("=" * 98)
     print("-" * 98)
     print("=" * 98)
 
-    model = MODEL()
+    model = VDSR()
     print(model.summary())
     plot_model(model, show_shapes=True, to_file="model.png")

@@ -20,9 +20,6 @@ def load_multiprocessing(multiprocessing_pool, image_paths):
     X = np.array(X) / 255
     y = np.array(y) / 255
 
-    X = X - np.mean(X)
-    y = y - np.mean(y)
-
     return X, y
 
 
@@ -39,9 +36,6 @@ def load(image_paths):
 
     X = np.array(X) / 255
     y = np.array(y) / 255
-
-    X = X - np.mean(X)
-    y = y - np.mean(y)
 
     return X, y
 
@@ -92,7 +86,7 @@ def get_set(image_path):
         (dim // scale, dim // scale),
         interpolation=cv2.INTER_AREA,
     )
-    image = cv2.resize(image, (dim, dim), interpolation=random.choice([0, 1, 2, 3, 4]))
+    image = cv2.resize(image, (dim, dim), interpolation=random.choice([1, 2, 3, 4]))
 
     # Store X
     X = image
