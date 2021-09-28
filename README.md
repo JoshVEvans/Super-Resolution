@@ -14,6 +14,9 @@ How did I get to this model architecture? I initially started with a very early 
 The next model I tried implementing was Very Deep Super-Resolution ([VDSR](https://arxiv.org/pdf/1511.04587.pdf)). This model improves upon the original SRCNN by adding a global skip connection, thus making upscaling much easier. Essentially, the network doesn't need to reconstruct the image entirely and instead needs to reconstruct the difference (the residual) between the high and low-resolution image.
 <br />
 My implementation uses the idea of skip connections found within VDSR and implements both global and local connections using an `Add` Layer. Since this model is quite deep, I also implemented a smaller model that uses `Concatenate` layers instead of using `Add` Layers.
+<br />
+Here is the graph showing the differences in loss values for my different implementations of super-resolution architectures.
+![alt text](md_images/plot.png)
 
 ## Network Architecture:
 #### The core of this model is in the residual blocks.
