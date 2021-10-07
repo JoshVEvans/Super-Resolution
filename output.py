@@ -10,8 +10,8 @@ def evaluate(model, scale=2, concat=True, summary=True):
     if summary:
         model.summary()
 
-    dir_original = "evaluation/original/"
-    dir_output = "evaluation/output/"
+    dir_original = "GAN/original/"
+    dir_output = "GAN/output/"
 
     image_names = os.listdir(dir_original)
 
@@ -29,7 +29,7 @@ def evaluate(model, scale=2, concat=True, summary=True):
         interpolated = image
 
         # Write Interpolated
-        cv2.imwrite(f"evaluation/interpolated/{image_name}", interpolated)
+        cv2.imwrite(f"GAN/interpolated/{image_name}", interpolated)
 
         image = np.reshape(image, (1, *dim)) / 255
 
@@ -42,7 +42,7 @@ def evaluate(model, scale=2, concat=True, summary=True):
 
         if concat:
             cv2.imwrite(
-                f"evaluation/Combined/{image_name}",
+                f"GAN/Combined/{image_name}",
                 np.concatenate((input, interpolated, output), axis=1),
             )
 

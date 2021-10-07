@@ -1,16 +1,15 @@
-import network
-import output
 import utils
+import output
+import network
 
 from keras import backend as K
 from tensorflow.keras.utils import plot_model
 
-import numpy as np
-
-from tqdm import tqdm, trange
-import multiprocessing as mp
-import importlib
 import os
+import importlib
+import numpy as np
+import multiprocessing as mp
+from tqdm import tqdm, trange
 
 
 def main():
@@ -39,9 +38,14 @@ def training(dataset_path, batch_size, epochs, steps_per_epoch, workers):
     temp = 0
 
     # Get Model
-    model = network.MODEL()
+    model = network.SRCNN()
     model.summary()
     plot_model(model, to_file="model.png")
+
+    # Multiprocessing
+    print(f"Workers: {workers}")
+    if workers != 1:
+        p = mp.Pool(workers)
 
     # Get Image Paths
     dataset_paths = list(os.listdir(dataset_path))
@@ -49,15 +53,10 @@ def training(dataset_path, batch_size, epochs, steps_per_epoch, workers):
         [f"{dataset_path}{image_path}" for image_path in dataset_paths]
     )
 
-    # Multiprocessing
-    print(f"Workers: {workers}")
-    if workers != 1:
-        p = mp.Pool(workers)
-
     # Main Loop
     for e in tqdm(range(1, epochs + 1)):
         # Metrics
-        avg_loss = 0
+        avg_loss = []
         avg_accuracy = 0
 
         # Create Progress Bar
@@ -78,16 +77,18 @@ def training(dataset_path, batch_size, epochs, steps_per_epoch, workers):
             metrics = model.train_on_batch(X, y)
 
             # Update Metrics
-            avg_loss += metrics[0]
+            avg_loss.append(metrics[0])
             avg_accuracy += metrics[1]
 
             # Update Progress Bar
-            tr.set_description(f"Epoch: {e}/{epochs}")
-            tr.set_postfix(loss=avg_loss / (i + 1), accuracy=avg_accuracy / (i + 1))
+            tr.set_description(f"Epoch-{e}/{epochs}")
+            tr.set_postfix(
+                loss=np.array(avg_loss).mean(), accuracy=np.array(avg_loss).mean()
+            )
 
-        # Calculate Average loss and accuracy
-        avg_loss /= steps_per_epoch
-        avg_accuracy /= steps_per_epoch
+        # Metrics
+        avg_loss = np.array(avg_loss).mean()
+        avg_accuracy = np.array(avg_loss).mean()
 
         ### Learning Rate Decay ###
         if e != 1:
