@@ -27,6 +27,10 @@ def evaluate(model, scale=2, concat=True, summary=True):
         )
         image = cv2.resize(image, (dim[1], dim[0]), interpolation=cv2.INTER_LANCZOS4)
         interpolated = image
+
+        # Write Interpolated
+        cv2.imwrite(f"evaluation/interpolated/{image_name}", interpolated)
+
         image = np.reshape(image, (1, *dim)) / 255
 
         # Get Output
