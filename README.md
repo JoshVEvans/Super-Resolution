@@ -1,6 +1,6 @@
 # Single-Image Super Resolution (SISR)
 ## What is Super-Resolution?
-$\qquad$ Super-Resolution is the process of upscaling an image from low to high resolution. Many methods exist that implement an algorithm that performs SR, such as nearest-neighbor interpolation, bicubic interpolation, and Lanczos upsampling [(here)](https://en.wikipedia.org/wiki/Comparison_gallery_of_image_scaling_algorithms). This part of my project implements deep learning methods that significantly improve upon more traditional techniques. Deep learning works by applying common patterns found within high-resolution training data onto the low-resolution image during inference. 
+<p> Super-Resolution is the process of upscaling an image from low to high resolution. Many methods exist that implement an algorithm that performs SR, such as nearest-neighbor interpolation, bicubic interpolation, and Lanczos upsampling [(here)](https://en.wikipedia.org/wiki/Comparison_gallery_of_image_scaling_algorithms). This part of my project implements deep learning methods that significantly improve upon more traditional techniques. Deep learning works by applying common patterns found within high-resolution training data onto the low-resolution image during inference. </p>
 
 ## Examples
 ![alt text](evaluation/Combined/000000000029.jpg)
