@@ -62,9 +62,7 @@ Images Left to Right: Original, Nearest Neighbor, Predicted.
 ![alt text](evaluation/Combined/butterfly.png)
 ![alt text](evaluation/Combined/comic.png)
 
-## Complete Model Architecture:
-
-![alt text](md_images/model_large.png)
+## [Complete Model Architecture:](md_images/model_large.png)
 
 ### Hardware - Training Statistics
 ##### Trained on 3070 ti
