@@ -38,10 +38,10 @@ Here is the graph showing the differences in loss values for my different implem
 		|
 		result
 
-#### Uses `Add` layers to add residuals
+#### The larger model's residual blocks use `Add` layers to add residuals
 ![alt text](md_images/model_large_residuals.png)
 
-#### This is the smaller model that uses `Concatenate` layers to add residuals
+#### The smaller model's residual blocks use `Concatenate` layers to add residuals
 ![alt text](md_images/model_small.png)
 
 An image of the complete model is towards the bottom of this page.
