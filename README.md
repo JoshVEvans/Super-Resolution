@@ -1,6 +1,6 @@
 # Single-Image Super Resolution (SISR)
 ## What is Super-Resolution?
-<p> Super-Resolution is the process of upscaling an image from low to high resolution. Many methods exist that implement an algorithm that performs SR, such as nearest-neighbor interpolation, bicubic interpolation, and Lanczos upsampling [(here)](https://en.wikipedia.org/wiki/Comparison_gallery_of_image_scaling_algorithms). This part of my project implements deep learning methods that significantly improve upon more traditional techniques. Deep learning works by applying common patterns found within high-resolution training data onto the low-resolution image during inference. </p>
+Super-Resolution is the process of upscaling an image from low to high resolution. Many methods exist that implement an algorithm that performs SR, such as nearest-neighbor interpolation, bicubic interpolation, and Lanczos upsampling [(here)](https://en.wikipedia.org/wiki/Comparison_gallery_of_image_scaling_algorithms). This part of my project implements deep learning methods that significantly improve upon more traditional techniques. Deep learning works by applying common patterns found within high-resolution training data onto the low-resolution image during inference.
 
 ## Examples
 ![alt text](evaluation/Combined/000000000029.jpg)
@@ -9,17 +9,17 @@ To see a higher quality version, **[click](https://github.com/JoshVEvans/Super-R
 ![alt text](evaluation/Combined/000000001300.jpg)
 
 ## Reasearch and Development
-$\qquad$ How did I get to my final model architecture? I initially started with an early known architecture called Single-Image Convolutional Neural Network ([SRCNN](https://arxiv.org/pdf/1501.00092.pdf)). This architecture consists of 2 hidden layers and an output layer that reconstructs the high-resolution image. This architecture, although better than traditional algorithms, fails to reconstruct the image properly. [SRCNN](https://arxiv.org/pdf/1501.00092.pdf) is essentially a glorified image sharpening algorithm. 
+How did I get to my final model architecture? I initially started with an early known architecture called Single-Image Convolutional Neural Network ([SRCNN](https://arxiv.org/pdf/1501.00092.pdf)). This architecture consists of 2 hidden layers and an output layer that reconstructs the high-resolution image. This architecture, although better than traditional algorithms, fails to reconstruct the image properly. [SRCNN](https://arxiv.org/pdf/1501.00092.pdf) is essentially a glorified image sharpening algorithm. 
 
 ![alt text](md_images/srcnn.png)
 
-$\qquad$ The next model I tried implementing was Very Deep Super-Resolution ([VDSR](https://arxiv.org/pdf/1511.04587.pdf)). This model improves upon the original SRCNN by adding a global skip connection, thus making upscaling much easier. Essentially, the network doesn't need to reconstruct the image entirely and instead needs to reconstruct the difference (the residual) between the high and low-resolution image.
+The next model I tried implementing was Very Deep Super-Resolution ([VDSR](https://arxiv.org/pdf/1511.04587.pdf)). This model improves upon the original SRCNN by adding a global skip connection, thus making upscaling much easier. Essentially, the network doesn't need to reconstruct the image entirely and instead needs to reconstruct the difference (the residual) between the high and low-resolution image.
 
-$\qquad$ The following model I implemented was Very Deep Super-Resolution ([VDSR](https://arxiv.org/pdf/1511.04587.pdf)). This model improves the [SRCNN](https://arxiv.org/pdf/1501.00092.pdf) architecture by adding a global skip connection connecting the input and output images.  Essentially, the neural network no longer needs to fully reconstruct a high-resolution image; instead, it only needs to reconstruct the difference (the residual) between a high and low-resolution image. 
+The following model I implemented was Very Deep Super-Resolution ([VDSR](https://arxiv.org/pdf/1511.04587.pdf)). This model improves the [SRCNN](https://arxiv.org/pdf/1501.00092.pdf) architecture by adding a global skip connection connecting the input and output images.  Essentially, the neural network no longer needs to fully reconstruct a high-resolution image; instead, it only needs to reconstruct the difference (the residual) between a high and low-resolution image. 
 
-$\qquad$ My implementation improves upon the concept of residuals within VDSR by combining both global and local connections using an `Add` layer. Since this model is quite deep (50 Convolutional Layers), it takes a long time for the model to predict an image during inference. I created a smaller model that uses `Concatenate` layers to replace the `Add` layers, and although much smaller than the original model, it produces comparable results due to the density of connections inherent to concatenation layers.
+My implementation improves upon the concept of residuals within VDSR by combining both global and local connections using an `Add` layer. Since this model is quite deep (50 Convolutional Layers), it takes a long time for the model to predict an image during inference. I created a smaller model that uses `Concatenate` layers to replace the `Add` layers, and although much smaller than the original model, it produces comparable results due to the density of connections inherent to concatenation layers.
 
-$\qquad$ Here is the graph showing the differences in loss values for my different implementations of super-resolution architectures.
+Here is the graph showing the differences in loss values for my different implementations of super-resolution architectures.
 ![alt text](md_images/plot.png)
 
 ## Network Architecture:
@@ -47,12 +47,12 @@ $\qquad$ Here is the graph showing the differences in loss values for my differe
 An image of the complete model is towards the bottom of this page.
 
 ## How do you use this model?
-$\qquad$ Put low-resolution images to upscale inside the '**inference/original**' directory. Run output.py, and the results will be written into the '**inference/output**' directory. It should take a couple of seconds to run the model for each image inside the input directory. 
+Put low-resolution images to upscale inside the '**inference/original**' directory. Run output.py, and the results will be written into the '**inference/output**' directory. It should take a couple of seconds to run the model for each image inside the input directory. 
 
-$\qquad$ If you find that the model takes too long to run, or you run out of memory, try replacing '*weights/LARGE_BEST.h5*' with other models found within the [weights](https://github.com/JoshVEvans/Super-Resolution/tree/master/weights) folder such as '*weights/SMALL_BEST.h5*' or '*weights/VDSR_BEST.h5*'.
+If you find that the model takes too long to run, or you run out of memory, try replacing '*weights/LARGE_BEST.h5*' with other models found within the [weights](https://github.com/JoshVEvans/Super-Resolution/tree/master/weights) folder such as '*weights/SMALL_BEST.h5*' or '*weights/VDSR_BEST.h5*'.
 
 ## How can you train your own model?
-$\qquad$ The model is instantiated within [`network.py`](https://github.com/JoshVEvans/Super-Resolution/blob/master/network.py). You can play around with hyper-parameters there. First, to train the model, delete the images currently within `data/` put your training image data within that file - I recommend the [DIV2K dataset](https://data.vision.ee.ethz.ch/cvl/DIV2K/). Finally, mess with hyper-parameters in [`train.py`](https://github.com/JoshVEvans/Super-Resolution/blob/master/train.py) and run `train.py`. If you’re training on weaker hardware, I’d recommend lowering the `batch_size` below the currently set ***8*** images. Also, decrease the number of (`residual blocks`) from `24 to 9` and reduce the number of filters (`num_filters`) from `128 to 64`.
+The model is instantiated within [`network.py`](https://github.com/JoshVEvans/Super-Resolution/blob/master/network.py). You can play around with hyper-parameters there. First, to train the model, delete the images currently within `data/` put your training image data within that file - I recommend the [DIV2K dataset](https://data.vision.ee.ethz.ch/cvl/DIV2K/). Finally, mess with hyper-parameters in [`train.py`](https://github.com/JoshVEvans/Super-Resolution/blob/master/train.py) and run `train.py`. If you’re training on weaker hardware, I’d recommend lowering the `batch_size` below the currently set ***8*** images. Also, decrease the number of (`residual blocks`) from `24 to 9` and reduce the number of filters (`num_filters`) from `128 to 64`.
 
 ## More Examples:
 #### Set 5 Evaluation Set:
