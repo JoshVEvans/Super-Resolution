@@ -27,18 +27,6 @@ def ssim_loss(y_true, y_pred):
     loss = 1 - tf.reduce_mean(tf.image.ssim(y_true, y_pred, 1))
     return loss
 
-def MODEL():
-    # Initialize Input
-    inputX = Input(shape=(None, None, 3))
-
-    # Reconstruction - Output Layer
-    x = Conv2D(filters=3, kernel_size=3, padding="same", activation="relu")(inputX)
-
-    # Create and Compile model
-    model = Model(inputs=inputX, outputs=x, name="MODEL")
-    model.compile(optimizer=Adam(learning_rate=1e-4), loss="mae", metrics=["accuracy"])
-
-    return model
 
 def SRCNN():
     # Initialize Input
