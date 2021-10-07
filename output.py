@@ -17,17 +17,17 @@ def evaluate(model, scale=2, concat=True, summary=True):
 
     for image_name in image_names:
         # Read in and format original image
-        image = cv2.imread(f"{dir_original}{image_name}") / 255
-        input = image * 255
+        image = cv2.imread(f"{dir_original}{image_name}")
+        input = image
 
         # Interpolate image
         dim = image.shape
         image = cv2.resize(
             image, (dim[1] // scale, dim[0] // scale), interpolation=cv2.INTER_AREA
         )
-        image = cv2.resize(image, (dim[1], dim[0]), interpolation=cv2.INTER_NEAREST)
-        interpolated = image * 255
-        image = np.reshape(image, (1, *dim))
+        image = cv2.resize(image, (dim[1], dim[0]), interpolation=cv2.INTER_LANCZOS4)
+        interpolated = image
+        image = np.reshape(image, (1, *dim)) / 255
 
         # Get Output
         output = np.array(model(image)[0])
@@ -72,5 +72,5 @@ def inference(model, scale=2, summary=True):
 
 
 if __name__ == "__main__":
-    model = load_model("weigts/BEST_WEIGHTS.h5")
-    inference(model, scale=2)
+    model = load_model("weights/VDSR_BEST.h5")
+    evaluate(model, scale=2)

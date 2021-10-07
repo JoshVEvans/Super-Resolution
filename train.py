@@ -39,7 +39,7 @@ def training(dataset_path, batch_size, epochs, steps_per_epoch, workers):
     temp = 0
 
     # Get Model
-    model = network.MODEL_LARGE()
+    model = network.MODEL()
     model.summary()
     plot_model(model, to_file="model.png")
 
