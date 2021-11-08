@@ -31,8 +31,6 @@ def evaluate(model, scale=2, concat=True, summary=True):
         # Write Interpolated
         cv2.imwrite(f"evaluation/interpolated/{image_name}", interpolated)
 
-        # image = np.reshape(image, (1, *dim)) / 255
-
         # Standardize images
         image = np.reshape(image, (1, *dim))
         means = np.mean(image, axis=(0, 1, 2))
@@ -41,7 +39,6 @@ def evaluate(model, scale=2, concat=True, summary=True):
 
         # Get Output
         output = np.array(model(image)[0])
-        # output = output * 255
         output = output * stds + means
 
         # Write Output
@@ -65,18 +62,24 @@ def inference(model, scale=2, summary=True):
 
     for image_name in image_names:
         # Read in and format original image
-        image = cv2.imread(f"{dir_original}{image_name}") / 255
+        image = cv2.imread(f"{dir_original}{image_name}")
 
         # Upscale image
         dim = image.shape
         image = cv2.resize(
-            image, (dim[1] * scale, dim[0] * scale), interpolation=cv2.INTER_CUBIC
+            image, (dim[1] * scale, dim[0] * scale), interpolation=cv2.INTER_LANCZOS4
         )
         dim = image.shape
+
+        # Standardize images
         image = np.reshape(image, (1, *dim))
+        means = np.mean(image, axis=(0, 1, 2))
+        stds = np.std(image, axis=(0, 1, 2))
+        image = (image - means) / stds
 
         # Get Output
-        output = np.array(model(image)[0]) * 255
+        output = np.array(model(image)[0])
+        output = output * stds + means
 
         # Write Output
         cv2.imwrite(f"{dir_output}{image_name}", output)
@@ -109,4 +112,4 @@ if __name__ == "__main__":
     tf.compat.v1.keras.backend.set_session(session)
 
     model = load_model("weights/LARGE.h5", custom_objects={"loss": loss})
-    evaluate(model, scale=2)
+    inference(model, scale=2)
