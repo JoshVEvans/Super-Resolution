@@ -15,7 +15,7 @@ from tqdm import tqdm, trange
 def main():
     # Parameters
     dataset_path = "data/COCO/"
-    batch_size = 12
+    batch_size = 16
     epochs = 500
     steps_per_epoch = 1000
     workers = 4
