@@ -22,9 +22,13 @@ session = tf.compat.v1.Session(config=config)
 tf.compat.v1.keras.backend.set_session(session)
 
 
-# Used for a test on possible loss functions -- ssim loss doesn't function as well as L1 loss
-def ssim_loss(y_true, y_pred):
-    loss = 1 - tf.reduce_mean(tf.image.ssim(y_true, y_pred, 1))
+def loss(y_true, y_pred):
+    alpha = 0.84
+    ssim = 1 - tf.reduce_mean(tf.image.ssim(y_true, y_pred, 1))
+    l1 = abs(y_true - y_pred)
+
+    loss = alpha * ssim + (1 - alpha) * l1
+
     return loss
 
 
@@ -37,11 +41,11 @@ def SRCNN():
     x = Conv2D(filters=32, kernel_size=1, padding="same", activation="relu")(x)
 
     # Reconstruction - Output Layer
-    x = Conv2D(filters=3, kernel_size=5, padding="same", activation="relu")(x)
+    x = Conv2D(filters=3, kernel_size=5, padding="same")(x)
 
     # Create and Compile model
     model = Model(inputs=inputX, outputs=x, name="SRCNN")
-    model.compile(optimizer=Adam(learning_rate=1e-4), loss="mae", metrics=["accuracy"])
+    model.compile(optimizer=Adam(learning_rate=1e-4), loss=loss, metrics=["accuracy"])
 
     return model
 
@@ -66,11 +70,11 @@ def VDSR():
     x = Add()([start, x])
 
     # Reconstruction - Output Layer
-    x = Conv2D(filters=3, kernel_size=3, padding="same", activation="relu")(x)
+    x = Conv2D(filters=3, kernel_size=3, padding="same")(x)
 
     # Create and Compile model
     model = Model(inputs=inputX, outputs=x, name="VDSR")
-    model.compile(optimizer=Adam(learning_rate=1e-4), loss="mae", metrics=["accuracy"])
+    model.compile(optimizer=Adam(learning_rate=1e-4), loss=loss, metrics=["accuracy"])
 
     return model
 
@@ -99,7 +103,36 @@ def MODEL_LARGE():
 
     # Create and Compile model
     model = Model(inputs=inputX, outputs=x, name="SR_LARGE")
-    model.compile(optimizer=Adam(learning_rate=1e-4), loss="mae", metrics=["accuracy"])
+    model.compile(optimizer=Adam(learning_rate=1e-4), loss=loss, metrics=["accuracy"])
+
+    return model
+
+
+def MODEL_XL():
+    # Parameters
+    filters = 192
+
+    # Initialize Input
+    inputX = Input(shape=(None, None, 3))
+
+    # Initial Hidden Layer
+    x = Conv2D(filters=filters, kernel_size=3, padding="same")(inputX)
+    start = x
+
+    # Residual Layers
+    # Large Model: 24 residuals 128 filters
+    for i in range(24):
+        x = residual_block_large(x, filters=filters, kernel_size=3)
+
+    # Add Residuals
+    x = Add()([start, x])
+
+    # Reconstruction - Output Layer
+    x = Conv2D(filters=3, kernel_size=3, padding="same")(x)
+
+    # Create and Compile model
+    model = Model(inputs=inputX, outputs=x, name="SR_LARGE")
+    model.compile(optimizer=Adam(learning_rate=1e-4), loss=loss, metrics=["accuracy"])
 
     return model
 
@@ -152,7 +185,7 @@ def MODEL_SMALL():
 
     # Create and Compile model
     model = Model(inputs=inputX, outputs=x, name="SR_SMALL")
-    model.compile(optimizer=Adam(learning_rate=1e-4), loss="mae", metrics=["accuracy"])
+    model.compile(optimizer=Adam(learning_rate=1e-4), loss=loss, metrics=["accuracy"])
 
     return model
 
@@ -186,6 +219,6 @@ if __name__ == "__main__":
     print("-" * 98)
     print("=" * 98)
 
-    model = VDSR()
+    model = MODEL_XL()
     print(model.summary())
     plot_model(model, show_shapes=True, to_file="model.png")

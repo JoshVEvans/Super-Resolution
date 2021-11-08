@@ -17,8 +17,14 @@ def load_multiprocessing(multiprocessing_pool, image_paths):
         X.append(iteration[0])
         y.append(iteration[1])
 
-    X = np.array(X) / 255
-    y = np.array(y) / 255
+    # X = np.array(X) / 255
+    # y = np.array(y) / 255
+
+    X = np.array(X)
+    y = np.array(y)
+
+    X = (X - np.mean(X, axis=(0, 1, 2))) / np.std(X, axis=(0, 1, 2))
+    y = (y - np.mean(y, axis=(0, 1, 2))) / np.std(y, axis=(0, 1, 2))
 
     return X, y
 
@@ -34,8 +40,14 @@ def load(image_paths):
         X.append(a)
         y.append(b)
 
-    X = np.array(X) / 255
-    y = np.array(y) / 255
+    # X = np.array(X) / 255
+    # y = np.array(y) / 255
+
+    X = np.array(X)
+    y = np.array(y)
+
+    X = (X - np.mean(X, axis=(0, 1, 2))) / np.std(X, axis=(0, 1, 2))
+    y = (y - np.mean(y, axis=(0, 1, 2))) / np.std(y, axis=(0, 1, 2))
 
     return X, y
 

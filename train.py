@@ -15,8 +15,8 @@ from tqdm import tqdm, trange
 def main():
     # Parameters
     dataset_path = "data/COCO/"
-    batch_size = 8
-    epochs = 250
+    batch_size = 12
+    epochs = 500
     steps_per_epoch = 1000
     workers = 4
 
@@ -57,7 +57,7 @@ def training(dataset_path, batch_size, epochs, steps_per_epoch, workers):
     for e in tqdm(range(1, epochs + 1)):
         # Metrics
         avg_loss = []
-        avg_accuracy = 0
+        avg_accuracy = []
 
         # Create Progress Bar
         tr = trange(steps_per_epoch, desc="Epoch: ", leave=True)
@@ -78,17 +78,17 @@ def training(dataset_path, batch_size, epochs, steps_per_epoch, workers):
 
             # Update Metrics
             avg_loss.append(metrics[0])
-            avg_accuracy += metrics[1]
+            avg_accuracy.append(metrics[1])
 
             # Update Progress Bar
             tr.set_description(f"Epoch-{e}/{epochs}")
             tr.set_postfix(
-                loss=np.array(avg_loss).mean(), accuracy=np.array(avg_loss).mean()
+                loss=np.array(avg_loss).mean(), accuracy=np.array(avg_accuracy).mean()
             )
 
         # Metrics
         avg_loss = np.array(avg_loss).mean()
-        avg_accuracy = np.array(avg_loss).mean()
+        avg_accuracy = np.array(avg_accuracy).mean()
 
         ### Learning Rate Decay ###
         if e != 1:
