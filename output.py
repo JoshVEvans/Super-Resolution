@@ -43,7 +43,7 @@ def evaluate(model, scale=2, concat=True, summary=True):
 
         # White Strip
         white = np.full(
-            shape=(output.shape[0], output.shape[0] // 10, 3), fill_value=255
+            shape=(output.shape[0], output.shape[1] // 50, 3), fill_value=255
         )
 
         # Write Output
