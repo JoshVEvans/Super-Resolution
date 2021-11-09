@@ -25,7 +25,7 @@ def evaluate(model, scale=2, concat=True, summary=True):
         image = cv2.resize(
             image, (dim[1] // scale, dim[0] // scale), interpolation=cv2.INTER_AREA
         )
-        image = cv2.resize(image, (dim[1], dim[0]), interpolation=cv2.INTER_CUBIC)
+        image = cv2.resize(image, (dim[1], dim[0]), interpolation=cv2.INTER_LANCZOS4)
         interpolated = image
 
         # Write Interpolated
