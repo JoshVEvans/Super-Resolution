@@ -19,7 +19,17 @@ The following model I implemented was Very Deep Super-Resolution ([VDSR](https:/
 
 My implementation improves upon the concept of residuals within VDSR by combining both global and local connections using an `Add` layer. Since this model is quite deep (50 Convolutional Layers), it takes a long time for the model to predict an image during inference. I created a smaller model that uses `Concatenate` layers to replace the `Add` layers, and although much smaller than the original model, it produces comparable results due to the density of connections inherent to concatenation layers.
 
-Here is the graph showing the differences in SSIM values for my different implementations of super-resolution architectures.
+### Model Architectures
+
+|Architectures|Parameters|
+|:-----------:|:--------:|
+|SRCNN		  |20,099    |
+|VDSR 		  |668,227   |
+|Small		  |2,012,611 |
+|Large		  |7,091,075 |
+
+
+### Architecture Performance
 ![alt text](md_images/plot_ssim.png)
 
 ## Network Architecture:
