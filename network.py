@@ -219,6 +219,6 @@ if __name__ == "__main__":
     print("-" * 98)
     print("=" * 98)
 
-    model = MODEL_LARGE()
+    model = SRCNN()
     print(model.summary())
     #plot_model(model, show_shapes=True, to_file="model.png")
