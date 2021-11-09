@@ -41,13 +41,18 @@ def evaluate(model, scale=2, concat=True, summary=True):
         output = np.array(model(image)[0])
         output = output * stds + means
 
+        # White Strip
+        white = np.full(
+            shape=(output.shape[0], output.shape[0] // 10, 3), fill_value=255
+        )
+
         # Write Output
         cv2.imwrite(f"{dir_output}{image_name}", output)
 
         if concat:
             cv2.imwrite(
                 f"evaluation/Combined/{image_name}",
-                np.concatenate((input, interpolated, output), axis=1),
+                np.concatenate((input, white, interpolated, white, output), axis=1),
             )
 
 
@@ -112,4 +117,4 @@ if __name__ == "__main__":
     tf.compat.v1.keras.backend.set_session(session)
 
     model = load_model("weights/LARGE.h5", custom_objects={"loss": loss})
-    inference(model, scale=2)
+    evaluate(model, scale=2)
