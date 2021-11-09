@@ -21,13 +21,13 @@ My implementation improves upon the concept of residuals within VDSR by combinin
 
 ### Model Architecture Comparison
 
-| Methods | Parameters | Number of Filters | Layers |          SSIM           |            PSNR            | Training Time |
-| ------- | :--------: | :---------------: | :----: | :---------------------: | :------------------------: | :-----------: |
-| Bicubic |     ~      |         ~         |   ~    |         0.9201          |          32.4975           |       ~       |
-| SRCNN   |    20k     |      64-32-3      |   3    |         0.9389          |           36.113           |     6hrs      |
-| VDSR    |    668k    | (19 layers) 64-3  |   20   |         0.9488          |          37.3448           |     8hrs      |
-| Small   |   2,013k   | (19 layers) 64-3  |   20   |         0.9501          |          37.5013           |     15hrs     |
-| Large   |   7,091k   | (49 layers) 128-3 |   50   | <strong>0.9541</strong> | <strong>37.9479  </strong> |     23hrs     |
+| Methods | Depth |      Filters      | Parameters |          SSIM           |            PSNR            | Training Time |
+| ------- | :---: | :---------------: | :--------: | :---------------------: | :------------------------: | :-----------: |
+| Bicubic |   ~   |         ~         |     ~      |         0.9201          |          32.4975           |       ~       |
+| SRCNN   |   3   |      64-32-3      |    20k     |         0.9389          |           36.113           |     6hrs      |
+| VDSR    |  20   | (19 layers) 64-3  |    668k    |         0.9488          |          37.3448           |     8hrs      |
+| Small   |  20   | (19 layers) 64-3  |   2,013k   |         0.9501          |          37.5013           |     15hrs     |
+| Large   |  50   | (49 layers) 128-3 |   7,091k   | <strong>0.9541</strong> | <strong>37.9479  </strong> |     23hrs     |
 
 
 ### Architecture Performance
