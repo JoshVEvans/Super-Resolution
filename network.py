@@ -1,6 +1,6 @@
 import os
 import tensorflow as tf
-import cv2
+
 from keras.models import Model
 from tensorflow.keras.optimizers import Adam
 from keras.layers import Input, Conv2D, Concatenate, Add
