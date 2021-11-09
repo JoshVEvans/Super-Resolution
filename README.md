@@ -21,7 +21,7 @@ My implementation improves upon the concept of residuals within VDSR by combinin
 
 ### Model Architecture Comparison
 
-| Methods | Depth |      Filters      | Parameters |          SSIM           |            PSNR            | Training Time |
+| Methods | Depth |      Filters      | Parameters |         SSIM-2x         |          PSNR-2x           | Training Time |
 | ------- | :---: | :---------------: | :--------: | :---------------------: | :------------------------: | :-----------: |
 | Bicubic |   ~   |         ~         |     ~      |         0.9201          |          32.4975           |       ~       |
 | SRCNN   |   3   |      64-32-3      |    20k     |         0.9389          |           36.113           |     6hrs      |
