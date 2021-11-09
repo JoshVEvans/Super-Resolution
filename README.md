@@ -21,12 +21,13 @@ My implementation improves upon the concept of residuals within VDSR by combinin
 
 ### Model Architecture Comparison
 
-| Architectures | Parameters | Number of Filters | Layers | Best SSIM               | Best PSNR                  |
-| ------------- | ---------- | ----------------- | ------ | ----------------------- | -------------------------- |
-| SRCNN         | 20,099     | 64-32-3           | 3      | 0.9389                  | 36.113                     |
-| VDSR          | 668,227    | (19)64-3          | 20     | 0.9488                  | 37.3448                    |
-| Small         | 2,012,611  | (19)64-3          | 20     | 0.9521                  | 37.7013                    |
-| Large         | 7,091,075  | (49)128-3         | 50     | <strong>0.9541</strong> | <strong>37.9479  </strong> |
+| Methods | Parameters | Number of Filters | Layers | SSIM                    | PSNR                       | Training Time |
+| ------- | ---------- | ----------------- | ------ | ----------------------- | -------------------------- | ------------- |
+| Bicubic | ~          | ~                 | ~      | 0.9201                  | 32.4975                    | ~             |
+| SRCNN   | 20,099     | 64-32-3           | 3      | 0.9389                  | 36.113                     | 6hrs          |
+| VDSR    | 668,227    | (19)64-3          | 20     | 0.9488                  | 37.3448                    | 8hrs          |
+| Small   | 2,012,611  | (19)64-3          | 20     | 0.9501                  | 37.5013                    | 15hrs         |
+| Large   | 7,091,075  | (49)128-3         | 50     | <strong>0.9541</strong> | <strong>37.9479  </strong> | 23hrs         |
 
 
 ### Architecture Performance
@@ -78,7 +79,6 @@ Images Left to Right: Original, Nearest Neighbor, Predicted.
 ##### Trained on 3070 ti
 ###### Batch Size: 8
 ###### Training Image Size: 64x64
-##### Training Time ~22hrs
 
 ### Author
 ##### Joshua Evans - [github/JoshVEvans](https://github.com/JoshVEvans)
