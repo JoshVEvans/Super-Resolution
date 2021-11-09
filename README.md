@@ -65,7 +65,7 @@ If you find that the model takes too long to run, or you run out of memory, try 
 ## How can you train your own model?
 The model is instantiated within [`network.py`](https://github.com/JoshVEvans/Super-Resolution/blob/master/network.py). You can play around with hyper-parameters there. First, to train the model, delete the images currently within `data/` put your training image data within that file - I recommend the [DIV2K dataset](https://data.vision.ee.ethz.ch/cvl/DIV2K/). Finally, mess with hyper-parameters in [`train.py`](https://github.com/JoshVEvans/Super-Resolution/blob/master/train.py) and run `train.py`. If you’re training on weaker hardware, I’d recommend lowering the `batch_size` below the currently set ***8*** images. Also, decrease the number of (`residual blocks`) from `24 to 9` and reduce the number of filters (`num_filters`) from `128 to 64`.
 
-## More Examples:
+## Qualitative Examples:
 #### Set 5 Evaluation Set:
 Images Left to Right: Original, Nearest Neighbor, Predicted.
 ![alt text](evaluation/Combined/baboon.png)
