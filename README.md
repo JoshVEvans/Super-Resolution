@@ -3,9 +3,9 @@
 Super-Resolution is the process of upscaling an image from low to high resolution. Many methods exist that implement an algorithm that performs SR, such as nearest-neighbor interpolation, bicubic interpolation, and Lanczos upsampling [(here)](https://en.wikipedia.org/wiki/Comparison_gallery_of_image_scaling_algorithms). This part of my project implements deep learning methods that significantly improve upon more traditional techniques. Deep learning works by applying common patterns found within high-resolution training data onto the low-resolution image during inference.
 
 ## Examples
-![alt text](evaluation/Combined/000000000029.jpg)
-##### *From left to right: original, interpolated (Nearest Neighbor upscaling), and prediction (from neural network)*<br />
 To see a higher quality version, **[click](https://github.com/JoshVEvans/Super-Resolution/tree/master/evaluation/Combined) on the images**. In some cases, the upscaled image looks even better than the original!
+##### *From left to right: original, interpolated (Nearest Neighbor upscaling), and prediction (from neural network)*<br />
+![alt text](evaluation/Combined/000000000029.jpg)
 ![alt text](evaluation/Combined/000000001300.jpg)
 
 ## Reasearch and Development
