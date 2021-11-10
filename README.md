@@ -9,7 +9,7 @@ To see a higher quality version, **[click](https://github.com/JoshVEvans/Super-R
 ![alt text](evaluation/Combined/000000001300.jpg)
 
 ## Reasearch and Development
-How did I get to my final model architecture? I initially started with an early known architecture called Single-Image Convolutional Neural Network ([SRCNN](https://arxiv.org/pdf/1501.00092.pdf)). This architecture consists of 2 hidden layers and an output layer that reconstructs the high-resolution image. This architecture, although better than traditional algorithms, fails to reconstruct the image properly. [SRCNN](https://arxiv.org/pdf/1501.00092.pdf) is essentially a glorified image sharpening algorithm. 
+How did I get to my final model architecture? I initially started with an early known architecture called Single-Image Convolutional Neural Network ([SRCNN](https://arxiv.org/pdf/1501.00092.pdf)). This architecture consists of 2 hidden layers and an output layer that reconstructs the high-resolution image. This architecture, although better than traditional algorithms, fails to reconstruct the image properly. [SRCNN](https://arxiv.org/pdf/1501.00092.pdf) is essentially a glorified image-sharpening algorithm. 
 
 ![alt text](md_images/srcnn.png)
 
