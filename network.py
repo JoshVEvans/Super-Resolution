@@ -79,7 +79,7 @@ def VDSR():
     return model
 
 
-def MODEL_LARGE():
+def MODEL_LaRGE():
     # Parameters
     filters = 128
 
